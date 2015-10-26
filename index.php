@@ -3,7 +3,7 @@ require('location.php');
 ?>
 <html>
     <head>
-        <title>Where am I?</title>
+        <title>Is Where?</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
         <!-- Include roboto.css to use the Roboto web font, material.css to include the theme and ripples.css to style the ripple effect -->
@@ -11,13 +11,13 @@ require('location.php');
         <link href="css/material.min.css" rel="stylesheet">
         <link href="css/ripples.min.css" rel="stylesheet">
         <style>
-            .navbar{
-              margin-bottom:0px;
-            }
             #map-canvas {
-              width:calc(100% - 60px);
+              width: 100%;
               height: calc(100% - 60px);
-              position: relative;
+            }
+            .no-padding{
+              margin-top:-20px;
+              padding:0;
             }
         </style>
         <script src="https://maps.googleapis.com/maps/api/js"></script>
@@ -86,7 +86,7 @@ require('location.php');
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="javascript:void(0)">Where am I?</a>
+                <a class="navbar-brand" href="javascript:void(0)">Is Where?</a>
             </div>
             <div class="navbar-collapse collapse navbar-inverse-collapse">
                 <ul class="nav navbar-nav">
@@ -101,9 +101,46 @@ require('location.php');
                 </ul>
             </div>
         </div>
-        <div class=""
-        <div id="map-canvas"></div>
-        <div class="container">
+        <div class=".container-fluid">
+          <div class="col-md-9 no-padding">
+            <div id="map-canvas"></div>
+          </div>
+          <div class="col-md-3">
+            <div class="list-group">
+              <div class="list-group-item">
+                  <div class="row-action-primary">
+                      <i class="mdi-file-folder"></i>
+                  </div>
+                  <div class="row-content">
+                      <div class="least-content">15m</div>
+                      <h4 class="list-group-item-heading">Tile with a label</h4>
+                      <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus.</p>
+                  </div>
+              </div>
+              <div class="list-group-separator"></div>
+              <div class="list-group-item">
+                  <div class="row-action-primary">
+                      <i class="mdi-file-folder"></i>
+                  </div>
+                  <div class="row-content">
+                      <div class="least-content">10m</div>
+                      <h4 class="list-group-item-heading">Tile with a label</h4>
+                      <p class="list-group-item-text">Maecenas sed diam eget risus varius blandit.</p>
+                  </div>
+              </div>
+              <div class="list-group-separator"></div>
+              <div class="list-group-item">
+                  <div class="row-action-primary">
+                      <i class="mdi-file-folder"></i>
+                  </div>
+                  <div class="row-content">
+                      <div class="least-content">8m</div>
+                      <h4 class="list-group-item-heading">Tile with a label</h4>
+                      <p class="list-group-item-text">Maecenas sed diam eget risus varius blandit.</p>
+                  </div>
+              </div>
+            </div>
+          </div>
         </div>
     </body>
 </html>
