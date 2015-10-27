@@ -1,0 +1,14 @@
+<?php
+
+$ISWHERE_LOGIN_USERNAME = $_GET['username'];
+$ISWHERE_LOGIN_PASSWORD = $_GET['password'];
+
+$API = $ISWHERE_LOGIN_USERNAME + $ISWHERE_LOGIN_PASSWORD;
+$ISWHERE_API_KEY = hash('md5', $API);
+
+$ISWHERE_API_USERNAME = "villnoweric";
+$ISWHERE_API_FULLNAME = "Eric Villnow";
+
+echo "true, " . $ISWHERE_API_KEY . ", " . $ISWHERE_API_USERNAME . ", " . $ISWHERE_API_FULLNAME;
+
+?>
