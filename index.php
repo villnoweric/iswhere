@@ -1,11 +1,43 @@
 <?php
+include_once('core/configuration.php');
 require('core/location.php');
 
+$subdomain = array_shift((explode(".", $_SERVER['HTTP_HOST'])));
 
+//CHECK USER
+$result = mysqli_query($CON,"SELECT * FROM `users` WHERE `Subdomain`='$subdomain'");
+$valid_user = mysqli_num_rows($result);
+
+//GET USER DATA
+if($valid_user == 1){
+while($row = mysqli_fetch_array($result)) {
+    $USERNAME = $row['Username'];
+    $FULLNAME = $row['Fullname'];
+}
+}else{
+  
+}
+
+$result = mysqli_query($CON,"SELECT * FROM `logs` WHERE `User`='$USERNAME'");
+while($row = mysqli_fetch_array($result)) {
+    $lat = $row['Lat'];
+    $long = $row['Long'];
+}
+
+$url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" . $lat  . "," . $long;
+
+$json = file_get_contents($url);
+$data = json_decode($json, TRUE);
+
+$results = $data['results'];
+$zero = $results[0];
+$address_components = $zero['address_components'];
+$city = $address_components[3];
+$city_long = $city['long_name'];
 ?>
 <html>
     <head>
-        <title>Is Where?</title>
+        <title><?php echo $FULLNAME; ?> Is Where?</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
         <!-- Include roboto.css to use the Roboto web font, material.css to include the theme and ripples.css to style the ripple effect -->
@@ -88,7 +120,7 @@ require('core/location.php');
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="javascript:void(0)">Is Where?</a>
+                <a class="navbar-brand" href="javascript:void(0)"><?php echo $FULLNAME; ?> Is Where?</a>
             </div>
             <div class="navbar-collapse collapse navbar-inverse-collapse">
                 <ul class="nav navbar-nav">
@@ -96,7 +128,7 @@ require('core/location.php');
                     <li><a href="javascript:void(0)">History</a></li>
                 </ul>
                 <form class="navbar-form navbar-left">
-                    <input type="text" class="form-control col-lg-8" placeholder="Search">
+                    <input type="text" class="form-control col-lg-8" placeholder="<?php if(isset($FULLNAME)){ echo $FULLNAME; }else{ echo "Search"; } ?>">
                 </form>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="javascript:void(0)">Register</a></li>
@@ -109,38 +141,17 @@ require('core/location.php');
           </div>
           <div class="col-md-3">
             <div class="list-group">
-              <div class="list-group-item">
-                  <div class="row-action-primary">
-                      <i class="mdi-file-folder"></i>
-                  </div>
-                  <div class="row-content">
-                      <div class="least-content">15m</div>
-                      <h4 class="list-group-item-heading">Tile with a label</h4>
-                      <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus.</p>
-                  </div>
-              </div>
-              <div class="list-group-separator"></div>
-              <div class="list-group-item">
-                  <div class="row-action-primary">
-                      <i class="mdi-file-folder"></i>
-                  </div>
-                  <div class="row-content">
-                      <div class="least-content">10m</div>
-                      <h4 class="list-group-item-heading">Tile with a label</h4>
-                      <p class="list-group-item-text">Maecenas sed diam eget risus varius blandit.</p>
-                  </div>
-              </div>
-              <div class="list-group-separator"></div>
-              <div class="list-group-item">
-                  <div class="row-action-primary">
-                      <i class="mdi-file-folder"></i>
-                  </div>
-                  <div class="row-content">
-                      <div class="least-content">8m</div>
-                      <h4 class="list-group-item-heading">Tile with a label</h4>
-                      <p class="list-group-item-text">Maecenas sed diam eget risus varius blandit.</p>
-                  </div>
-              </div>
+              <?php
+              $result = mysqli_query($CON,"SELECT * FROM `logs` WHERE `User`='$USERNAME'");
+              while($row = mysqli_fetch_array($result)) {
+                  echo '<div class="list-group-item"><div class="row-action-primary"><i class="mdi-file-folder"></i></div><div class="row-content"><div class="least-content">';
+                  echo '</div><h4 class="list-group-item-heading">';
+                  echo $FULLNAME;
+                  echo '</h4><p class="list-group-item-text">';
+                  echo 'Checked in @ ' . $city_long;
+                  echo '</p></div></div><div class="list-group-separator"></div>';
+              }
+              ?>
             </div>
           </div>
         </div>
