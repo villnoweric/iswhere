@@ -64,6 +64,9 @@ $city_long = $city['long_name'];
                       mapTypeId: google.maps.MapTypeId.ROADMAP,
                       disableDefaultUI: true,
                       draggable: false,
+                      maxZoom: 12,
+                      minZoom: 12,
+                      keyboardShortcuts: false,
                       styles: [
                         {
                           featureType: 'poi',
