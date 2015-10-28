@@ -1,5 +1,7 @@
 <?php
-require('location.php');
+require('core/location.php');
+
+
 ?>
 <html>
     <head>
