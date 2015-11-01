@@ -1,9 +1,10 @@
 <?php
 
-$name = $_GET['name'];
+$api_key = $_GET['key'];
 $lat = $_GET['lat'];
 $long = $_GET['long'];
-$datetime = $_GET['dt'];
+
+$datetime = date('');
 
 $config = '<?php
     $name = "' . $name . '";
