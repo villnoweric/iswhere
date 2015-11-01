@@ -4,6 +4,7 @@ require('core/location.php');
 
 $subdomain = array_shift((explode(".", $_SERVER['HTTP_HOST'])));
 
+if(!empty($subdomain)){
 //CHECK USER
 $result = mysqli_query($CON,"SELECT * FROM `users` WHERE `Subdomain`='$subdomain'");
 $valid_user = mysqli_num_rows($result);
@@ -34,6 +35,8 @@ $zero = $results[0];
 $address_components = $zero['address_components'];
 $city = $address_components[3];
 $city_long = $city['long_name'];
+
+}
 ?>
 <html>
     <head>
@@ -127,11 +130,12 @@ $city_long = $city['long_name'];
             </div>
             <div class="navbar-collapse collapse navbar-inverse-collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="javascript:void(0)">App</a></li>
+                    <li class="active"><a href="javascript:void(0)">Home</a></li>
+                    <li><a href="javascript:void(0)">Download App</a></li>
                     <li><a href="javascript:void(0)">History</a></li>
                 </ul>
                 <form class="navbar-form navbar-left">
-                    <input type="text" class="form-control col-lg-8" placeholder="<?php if(isset($FULLNAME)){ echo $FULLNAME; }else{ echo "Search"; } ?>">
+                    <input type="text" name="s" class="form-control col-lg-8" placeholder="<?php if(isset($FULLNAME)){ echo $FULLNAME; }else{ echo "Search"; } ?>">
                 </form>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="javascript:void(0)">Register</a></li>
@@ -153,6 +157,19 @@ $city_long = $city['long_name'];
                   echo '</h4><p class="list-group-item-text">';
                   echo 'Checked in @ ' . $city_long;
                   echo '</p></div></div><div class="list-group-separator"></div>';
+              }
+              
+              if(isset($_GET['s'])){
+                $search_q = $_GET['s'];
+                $result = mysqli_query($CON,"SELECT * FROM `users` WHERE Username LIKE '%" . $search_q . "%' OR Fullname LIKE '%" . $search_q  ."%'");
+                while($row = mysqli_fetch_array($result)) {
+                  echo '<div class="list-group-item"><div class="row-action-primary"><i class="mdi-file-folder"></i></div><div class="row-content"><div class="least-content">';
+                  echo '</div><h4 class="list-group-item-heading">';
+                  echo '<a href="//' . $row['Subdomain'] . '.whereami-villnoweric.c9.io">' . $row['Fullname'] . '</a>';
+                  echo '</h4><p class="list-group-item-text">';
+                  echo 'Checked in @ ' . $city_long;
+                  echo '</p></div></div><div class="list-group-separator"></div>';
+              }
               }
               ?>
             </div>
